@@ -7,13 +7,13 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.create(item_params)
+    Item.create(item_params)
     redirect_to '/'
   end
 
   private
   def item_params
-    params.require(:item).permit(:name, :description, :category_id, :status_id, :postage_id, :prefecture_id, :day_id, :price)
+    params.require(:item).permit(:image, :name, :description, :category_id, :status_id, :postage_id, :prefecture_id, :day_id, :price)
   end
 
 end
