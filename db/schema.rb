@@ -56,7 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_08_064957) do
     t.integer "status_id", null: false
     t.integer "postage_id", null: false
     t.integer "prefecture_id", null: false
-    t.integer "day_id", null: false
+    t.integer "scheduled_day_id", null: false
     t.integer "price", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false

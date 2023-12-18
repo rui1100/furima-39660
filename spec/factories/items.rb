@@ -6,7 +6,7 @@ FactoryBot.define do
     status { Status.where.not(id: 1).sample }
     postage { Postage.where.not(id: 1).sample }
     prefecture { Prefecture.where.not(id: 1).sample }
-    day { Day.where.not(id: 1).sample }
+    scheduled_day { ScheduledDay.where.not(id: 1).sample }
     price { Faker::Commerce.price(range: 300..9_999_999).to_i }
 
     association :user
