@@ -25,6 +25,7 @@ class ItemsController < ApplicationController
 
   def edit
     return unless @item.order.nil?
+
     redirect_to root_path
   end
 
@@ -37,7 +38,6 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    binding.pry
     @item.destroy
     redirect_to root_path
   end
