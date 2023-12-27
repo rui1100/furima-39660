@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_21_093756) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_24_030438) do
   create_table "active_storage_attachments", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -49,6 +49,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_21_093756) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "deliveries", charset: "utf8", force: :cascade do |t|
+    t.string "post_code", null: false
+    t.integer "prefecture_id", null: false
+    t.string "city", null: false
+    t.string "address", null: false
+    t.string "building"
+    t.string "phone_number", null: false
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_deliveries_on_order_id"
+  end
+
   create_table "items", charset: "utf8", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -65,8 +78,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_21_093756) do
   end
 
   create_table "orders", charset: "utf8", force: :cascade do |t|
-    t.bigint "item_id"
-    t.bigint "user_id"
+    t.bigint "item_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_orders_on_item_id"
@@ -108,6 +121,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_21_093756) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "deliveries", "orders"
   add_foreign_key "items", "users"
   add_foreign_key "orders", "items"
   add_foreign_key "orders", "users"
