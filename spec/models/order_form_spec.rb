@@ -24,13 +24,13 @@ RSpec.describe OrderForm, type: :model do
       it '郵便番号は、「3桁ハイフン4桁」の半角文字列のみ保存可能なこと' do
         @order_form.post_code = '1234567'
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Post code is invalid")
+        expect(@order_form.errors.full_messages).to include('Post code is invalid')
       end
 
       it '都道府県が必須であること' do
         @order_form.prefecture_id = 1
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Prefecture must be other than 1")
+        expect(@order_form.errors.full_messages).to include('Prefecture must be other than 1')
       end
 
       it '市区町村が必須であること' do
@@ -54,19 +54,19 @@ RSpec.describe OrderForm, type: :model do
       it '電話番号は10桁以上であること' do
         @order_form.phone_number = '123456789'
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Phone number is invalid")
+        expect(@order_form.errors.full_messages).to include('Phone number is invalid')
       end
 
       it '電話番号は12桁未満であること' do
         @order_form.phone_number = '123456789012'
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Phone number is invalid")
+        expect(@order_form.errors.full_messages).to include('Phone number is invalid')
       end
 
       it '電話番号は半角数値のみであること' do
         @order_form.phone_number = '090abcdefgh'
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Phone number is invalid")
+        expect(@order_form.errors.full_messages).to include('Phone number is invalid')
       end
 
       it 'ユーザー情報が紐づいていること' do
