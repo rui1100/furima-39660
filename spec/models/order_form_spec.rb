@@ -12,6 +12,11 @@ RSpec.describe OrderForm, type: :model do
       it '正しい情報で購入できること' do
         expect(@order_form).to be_valid
       end
+
+      it '建物名がなくても保存できること' do
+        @order_form.building = nil
+        expect(@order_form).to be_valid
+      end
     end
 
     context '購入できない場合' do

@@ -1,9 +1,9 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index]
+  before_action :set_item, only: [:index, :create]
 
   def index
     gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-    @item = Item.find(params[:item_id])
     if @item.user_id == current_user.id || @item.order.present?
       redirect_to root_path
     else
@@ -12,12 +12,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def new
-    @order_form = OrderForm.new
-  end
-
   def create
-    @item = Item.find(params[:item_id])
     @order_form = OrderForm.new(order_params)
     if @order_form.valid?
       pay_item
@@ -40,6 +35,10 @@ class OrdersController < ApplicationController
       :building,
       :phone_number
     ).merge(token: params[:token], item_id: @item.id, user_id: current_user.id)
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
   end
 
   def pay_item
