@@ -1,9 +1,15 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only:[:index]
 
   def index
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @item = Item.find(params[:item_id])
-    @order_form = OrderForm.new
+    if @item.user_id == current_user.id || @item.order.present?
+      redirect_to root_path
+    else
+      @order_form = OrderForm.new
+      render :index, status: :unprocessable_entity
+    end
   end
 
   def new
@@ -14,10 +20,11 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
     @order_form = OrderForm.new(order_params)
     if @order_form.valid?
+      pay_item
       @order_form.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
+      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
       render :index, status: :unprocessable_entity
     end
   end
@@ -32,7 +39,15 @@ class OrdersController < ApplicationController
       :address,
       :building,
       :phone_number
-    ).merge(item_id: @item.id, user_id: current_user.id)
+    ).merge(token: params[:token], item_id: @item.id, user_id: current_user.id)
   end
 
+  def pay_item
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp::Charge.create(
+      amount: @item.price,
+      card: order_params[:token],
+      currency: 'jpy'
+    )
+  end
 end
